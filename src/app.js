@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import validations from "./middleware/validations";
+import rulevalidator from "./controller/rule-validate";
 
-const { checkRequired, checkDataType } = validations;
+const { validateReq } = validations;
+const { validateRule } = rulevalidator;
 
 dotenv.config();
 
@@ -26,7 +28,7 @@ app.get("/", (req, res) => {
     },
   });
 });
-app.post("/validate-rule", checkRequired, checkDataType);
+app.post("/validate-rule", validateReq, validateRule);
 
 app.listen(port, () => {
   console.log(`Server Running on: ${port}`);
