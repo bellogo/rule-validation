@@ -88,7 +88,7 @@ export default class Validations {
     }
     if (!["eq", "neq", "gt", "gte", "contains"].includes(req.body.rule.condition)) {
       return res.status(400).json({
-        message: "provide an acepted condition.",
+        message: "provide an accepted condition.",
         status: "error",
         data: null
       });
