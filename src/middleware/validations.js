@@ -26,14 +26,6 @@ export default class Validations {
   }
 
   static validateReq(req, res, next) {
-    // check payload
-    if (Object.keys(req.body).length === 0) {
-      return res.status(400).json({
-        message: "Invalid JSON payload passed.",
-        status: "error",
-        data: null
-      });
-    }
     // rule validations
     if (!req.body.rule) {
       return res.status(400).json({
