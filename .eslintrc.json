@@ -13,6 +13,7 @@
         "allowImportExportEverywhere": true
       },
     "rules": {
+      "default-case":"off",
       "linebreak-style": 0,
       "quotes": ["error", "double"],
       "semi": ["error", "always"],
@@ -23,6 +24,7 @@
       "consistent-return":"off",
       "no-tabs":"off",
       "prefer-const":"off",
+      "prefer-destructuring":"off",
       "max-len":"off",
       "global-require":"off",
       "import/no-unresolved":"off",

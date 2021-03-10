@@ -1,317 +1,63 @@
-export default class Rulevalidator {
+export default class ruleController {
+  static homePage(req, res) {
+    res.status(200).json({
+      message: "My Rule-Validation API",
+      status: "success",
+      data: {
+        name: "Ogodo Ufuoma Bella",
+        github: "@bellogo",
+        email: "ufuomaogodo@gmail.com",
+        mobile: "08165341913",
+        twitter: "@dcodeknight",
+      },
+    });
+  }
+
   static validateRule(req, res) {
     const { condition, condition_value, field } = req.body.rule;
-    const { data } = req.body;
-    const fieldArray = field.split(".");
+    const { field_value } = req.body;
+    const isValid = () => {
+      switch (condition) {
+        case "eq":
+          return field_value === condition_value;
+        case "neq":
+          return field_value !== condition_value;
+        case "gt":
+          return field_value > condition_value;
+        case "gte":
+          return field_value >= condition_value;
+        case "contains":
+          return field_value === condition_value;
+      }
+    };
 
-    // equal rule validation
-    if (condition === "eq" && fieldArray.length === 1) {
-      if (data[fieldArray[0]] === condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[0]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[0],
-              field_value: data[fieldArray[0]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[0]} failed validation.`,
-        status: "error",
+    if (isValid()) {
+      return res.status(200).json({
+        message: `field ${field} successfully validated.`,
+        status: "success",
         data: {
           validation: {
             error: false,
-            field: fieldArray[0],
-            field_value: data[fieldArray[0]],
+            field,
+            field_value,
             condition,
             condition_value
           }
         }
       });
     }
-    if (condition === "eq" && fieldArray.length === 2) {
-      if (data[fieldArray[0]][fieldArray[1]] === condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[1]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[1],
-              field_value: data[fieldArray[0]][fieldArray[1]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[1]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[1],
-            field_value: data[fieldArray[0]][fieldArray[1]],
-            condition,
-            condition_value
-          }
+    return res.status(200).json({
+      message: `field ${field} failed validation.`,
+      status: "error",
+      data: {
+        validation: {
+          error: true,
+          field,
+          field_value,
+          condition,
+          condition_value
         }
-      });
-    }
-
-    // not equal rule validation
-    if (condition === "neq" && fieldArray.length === 1) {
-      if (data[fieldArray[0]] !== condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[0]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[0],
-              field_value: data[fieldArray[0]],
-              condition,
-              condition_value
-            }
-          }
-        });
       }
-      return res.status(400).json({
-        message: `field ${fieldArray[0]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[0],
-            field_value: data[fieldArray[0]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-    if (condition === "neq" && fieldArray.length === 2) {
-      if (data[fieldArray[0]][fieldArray[1]] !== condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[1]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[1],
-              field_value: data[fieldArray[0]][fieldArray[1]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[1]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[1],
-            field_value: data[fieldArray[0]][fieldArray[1]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-
-    //  greater than rule validation
-    if (condition === "gt" && fieldArray.length === 1) {
-      if (data[fieldArray[0]] > condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[0]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[0],
-              field_value: data[fieldArray[0]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[0]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[0],
-            field_value: data[fieldArray[0]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-    if (condition === "gt" && fieldArray.length === 2) {
-      if (data[fieldArray[0]][fieldArray[1]] > condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[1]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[1],
-              field_value: data[fieldArray[0]][fieldArray[1]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[1]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[1],
-            field_value: data[fieldArray[0]][fieldArray[1]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-
-    // greater than or equal rule validation
-    if (condition === "gte" && fieldArray.length === 1) {
-      if (data[fieldArray[0]] >= condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[0]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[0],
-              field_value: data[fieldArray[0]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[0]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[0],
-            field_value: data[fieldArray[0]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-    if (condition === "gte" && fieldArray.length === 2) {
-      if (data[fieldArray[0]][fieldArray[1]] >= condition_value) {
-        return res.status(200).json({
-          message: `field ${fieldArray[1]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[1],
-              field_value: data[fieldArray[0]][fieldArray[1]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[1]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[1],
-            field_value: data[fieldArray[0]][fieldArray[1]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-
-    // contains rule validation
-    if (condition === "contains" && fieldArray.length === 1) {
-      if (data[fieldArray[0]].includes(condition_value)) {
-        return res.status(200).json({
-          message: `field ${fieldArray[0]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[0],
-              field_value: data[fieldArray[0]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[0]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[0],
-            field_value: data[fieldArray[0]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
-    if (condition === "contains" && fieldArray.length === 2) {
-      if (data[fieldArray[0]][fieldArray[1]].includes(condition_value)) {
-        return res.status(200).json({
-          message: `field ${fieldArray[1]} successfully validated.`,
-          status: "success",
-          data: {
-            validation: {
-              error: false,
-              field: fieldArray[1],
-              field_value: data[fieldArray[0]][fieldArray[1]],
-              condition,
-              condition_value
-            }
-          }
-        });
-      }
-      return res.status(400).json({
-        message: `field ${fieldArray[1]} failed validation.`,
-        status: "error",
-        data: {
-          validation: {
-            error: false,
-            field: fieldArray[1],
-            field_value: data[fieldArray[0]][fieldArray[1]],
-            condition,
-            condition_value
-          }
-        }
-      });
-    }
+    });
   }
 }
